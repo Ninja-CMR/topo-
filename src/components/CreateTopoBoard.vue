@@ -259,7 +259,7 @@
 import { ref, onMounted, onUnmounted, h } from 'vue'
 import { useRouter } from 'vue-router'
 import Logo from './Logo.vue'
-import { API_BASE_URL } from '../config'
+import { API_BASE_URL, getCurrentUserId } from '../config'
 
 const router = useRouter()
 const userName = ref('')
@@ -283,12 +283,12 @@ const getBoardShareUrl = (id: string) => {
 
 const fetchUserBoards = async () => {
   try {
+    currentUserId.value = getCurrentUserId()
     const url = currentUserId.value 
       ? `${API_BASE_URL}/api/topoboards/?user_id=${currentUserId.value}`
       : `${API_BASE_URL}/api/topoboards/`
     
     const res = await fetch(url)
-
     if (res.ok) {
       const data = await res.json()
       userBoards.value = data
@@ -306,13 +306,13 @@ const fetchUserBoards = async () => {
 }
 
 onMounted(() => {
+  currentUserId.value = getCurrentUserId()
   const topoUserStr = localStorage.getItem('topo_user')
   const savedData = localStorage.getItem('user_signup_response')
   
   if (topoUserStr) {
     try {
       const parsedUser = JSON.parse(topoUserStr)
-      currentUserId.value = parsedUser?.id || ''
       userName.value = parsedUser?.user_metadata?.full_name || parsedUser?.email || ''
     } catch (e) {
       console.error(e)
@@ -320,7 +320,6 @@ onMounted(() => {
   } else if (savedData) {
     try {
       const parsed = JSON.parse(savedData)
-      currentUserId.value = parsed?.user?.id || ''
       userName.value = parsed?.user?.user_metadata?.full_name || parsed?.user?.email || ''
     } catch (e) {
       console.error(e)
@@ -328,6 +327,7 @@ onMounted(() => {
   }
   
   fetchUserBoards()
+
 
   // Polling automatique discret en arrière-plan sans élément visuel superflu
   timer = setInterval(() => {

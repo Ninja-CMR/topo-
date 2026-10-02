@@ -25,12 +25,12 @@ async def create_topoboard(payload: TopoBoardCreate, user_id: Optional[str] = Qu
 @router.get("/", response_model=List[Dict[str, Any]])
 async def list_topoboards(user_id: Optional[str] = Query(None)):
     """
-    Récupère la liste des topoBoards (filtrée par user_id si spécifié).
+    Récupère la liste des topoBoards (filtrée par user_id ou unassigned si spécifié).
     """
     try:
         query = supabase.table("topoboards").select("*, responses(*)")
         if user_id:
-            query = query.eq("user_id", user_id)
+            query = query.or_(f"user_id.eq.{user_id},user_id.is.null")
         
         try:
             res = query.order("created_at", desc=True).execute()
@@ -38,12 +38,13 @@ async def list_topoboards(user_id: Optional[str] = Query(None)):
         except Exception:
             query_simple = supabase.table("topoboards").select("*")
             if user_id:
-                query_simple = query_simple.eq("user_id", user_id)
+                query_simple = query_simple.or_(f"user_id.eq.{user_id},user_id.is.null")
             res = query_simple.order("created_at", desc=True).execute()
             return res.data or []
     except Exception as e:
         print("Erreur lecture topoboards:", str(e))
         raise HTTPException(status_code=500, detail=str(e))
+
 
 
 @router.get("/{board_id}")

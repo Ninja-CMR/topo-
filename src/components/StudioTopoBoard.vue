@@ -386,7 +386,7 @@
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import Logo from './Logo.vue'
-import { API_BASE_URL } from '../config'
+import { API_BASE_URL, getCurrentUserId } from '../config'
 
 const router = useRouter()
 const isCreating = ref(false)
@@ -419,15 +419,7 @@ const formattedProductUrl = computed(() => {
 const handleCreateTopoBoard = async () => {
   isCreating.value = true
   try {
-    const topoUserStr = localStorage.getItem('topo_user')
-    const savedDataStr = localStorage.getItem('user_signup_response')
-    let userId = ''
-
-    if (topoUserStr) {
-      try { userId = JSON.parse(topoUserStr)?.id || '' } catch (e) {}
-    } else if (savedDataStr) {
-      try { userId = JSON.parse(savedDataStr)?.user?.id || '' } catch (e) {}
-    }
+    const userId = getCurrentUserId()
 
     const payload = {
       product_name: config.productName,
@@ -445,6 +437,7 @@ const handleCreateTopoBoard = async () => {
     const apiUrl = userId 
       ? `${API_BASE_URL}/api/topoboards/?user_id=${userId}`
       : `${API_BASE_URL}/api/topoboards/`
+
 
     const res = await fetch(apiUrl, {
       method: 'POST',
