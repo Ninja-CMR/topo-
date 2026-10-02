@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --orange-50:  #FFF5EC;
+    --orange-100: #FFE8D3;
+    --orange-200: #FFD0A6;
+    --orange-300: #FFB070;
+    --orange-400: #FF8F42;
+    --orange-500: #FD711A;
+    --orange-600: #E35D08;
+    --orange-700: #B84A06;
+    --orange-800: #8A3704;
+    --orange-900: #5C2503;
+
+    --ink:         #1C1410;
+    --neutral-800: #2E241E;
+    --neutral-700: #4A3F37;
+    --neutral-600: #6B5F56;
+    --neutral-500: #8C8077;
+    --neutral-400: #B3A89F;
+    --neutral-300: #D6CEC7;
+    --neutral-200: #E9E4DF;
+    --neutral-100: #F4F1EE;
+    --neutral-50:  #FAF8F6;
+    --white:       #FFFFFF;
+
+    --font-display: 'Nunito', sans-serif;
+    --font-ui:      'Inter', sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-ui);
+    background-color: var(--neutral-50);
+    color: var(--ink);
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+  }
+}
+
+/* Page Transition Animations */
+.page-slide-fade-enter-active {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-slide-fade-leave-active {
+  transition: all 0.2s cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+.page-slide-fade-enter-from {
+  opacity: 0;
+  transform: translateY(8px) scale(0.995);
+}
+
+.page-slide-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.995);
+}
+
