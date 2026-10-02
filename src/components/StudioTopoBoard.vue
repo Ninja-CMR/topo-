@@ -456,17 +456,18 @@ const handleCreateTopoBoard = async () => {
       const savedBoard = await res.json()
       createdTopoBoardUrl.value = `${baseUrl}/${savedBoard.id}`
     } else {
-      const fallbackId = Math.random().toString(36).substring(2, 9)
-      createdTopoBoardUrl.value = `${baseUrl}/${fallbackId}`
+      const errData = await res.json().catch(() => ({}))
+      console.error('Erreur API création topoBoard:', errData)
+      alert(`Erreur lors de la création du topoBoard: ${errData.detail || 'Erreur serveur'}`)
     }
-  } catch (err) {
-    console.error('Erreur de sauvegarde API:', err)
-    const fallbackId = Math.random().toString(36).substring(2, 9)
-    createdTopoBoardUrl.value = `${window.location.origin}/board/${fallbackId}`
+  } catch (err: any) {
+    console.error('Erreur de connexion API:', err)
+    alert('Impossible de contacter le serveur backend. Vérifiez votre connexion.')
   } finally {
     isCreating.value = false
   }
 }
+
 
 
 const copyLink = () => {
