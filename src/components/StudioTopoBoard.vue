@@ -386,6 +386,7 @@
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import Logo from './Logo.vue'
+import { API_BASE_URL } from '../config'
 
 const router = useRouter()
 const isCreating = ref(false)
@@ -442,14 +443,15 @@ const handleCreateTopoBoard = async () => {
     }
 
     const apiUrl = userId 
-      ? `http://localhost:8000/api/topoboards/?user_id=${userId}`
-      : 'http://localhost:8000/api/topoboards/'
+      ? `${API_BASE_URL}/api/topoboards/?user_id=${userId}`
+      : `${API_BASE_URL}/api/topoboards/`
 
     const res = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     })
+
 
     const baseUrl = `${window.location.origin}/board`
 

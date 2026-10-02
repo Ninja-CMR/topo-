@@ -259,6 +259,7 @@
 import { ref, onMounted, onUnmounted, h } from 'vue'
 import { useRouter } from 'vue-router'
 import Logo from './Logo.vue'
+import { API_BASE_URL } from '../config'
 
 const router = useRouter()
 const userName = ref('')
@@ -283,10 +284,11 @@ const getBoardShareUrl = (id: string) => {
 const fetchUserBoards = async () => {
   try {
     const url = currentUserId.value 
-      ? `http://localhost:8000/api/topoboards/?user_id=${currentUserId.value}`
-      : 'http://localhost:8000/api/topoboards/'
+      ? `${API_BASE_URL}/api/topoboards/?user_id=${currentUserId.value}`
+      : `${API_BASE_URL}/api/topoboards/`
     
     const res = await fetch(url)
+
     if (res.ok) {
       const data = await res.json()
       userBoards.value = data

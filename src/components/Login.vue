@@ -101,6 +101,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { API_BASE_URL } from '../config'
 
 const router = useRouter()
 const showPassword = ref(false)
@@ -118,11 +119,12 @@ const handleLogin = async () => {
   isLoading.value = true
   errorMessage.value = ''
   try {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form)
     })
+
     const data = await res.json()
     if (!res.ok) throw new Error(data.detail || 'Identifiants invalides.')
     

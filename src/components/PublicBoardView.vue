@@ -177,6 +177,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { API_BASE_URL } from '../config'
 
 const route = useRoute()
 const boardId = route.params.id as string
@@ -201,7 +202,7 @@ const fetchBoardDetails = async () => {
   isLoading.value = true
   error.value = ''
   try {
-    const res = await fetch(`http://localhost:8000/api/topoboards/${boardId}`)
+    const res = await fetch(`${API_BASE_URL}/api/topoboards/${boardId}`)
     if (res.ok) {
       board.value = await res.json()
     } else {
@@ -225,11 +226,12 @@ const submitResponse = async () => {
       whatsapp: whatsapp.value || null
     }
 
-    const res = await fetch(`http://localhost:8000/api/topoboards/${boardId}/responses`, {
+    const res = await fetch(`${API_BASE_URL}/api/topoboards/${boardId}/responses`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     })
+
 
     if (res.ok) {
       submitted.value = true

@@ -153,6 +153,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { API_BASE_URL } from '../config'
 
 const router = useRouter()
 const showPassword = ref(false)
@@ -175,7 +176,7 @@ const handleSignUp = async () => {
   successMessage.value = ''
 
   try {
-    const response = await fetch('/api/auth/signup', {
+    const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -189,6 +190,7 @@ const handleSignUp = async () => {
         }
       })
     })
+
 
     const data = await response.json()
 
