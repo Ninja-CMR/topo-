@@ -179,9 +179,11 @@ const handleSignUp = async () => {
     const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
       },
       body: JSON.stringify({
+
         email: form.email,
         password: form.password,
         user_metadata: {

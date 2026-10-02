@@ -288,8 +288,13 @@ const fetchUserBoards = async () => {
       ? `${API_BASE_URL}/api/topoboards/?user_id=${currentUserId.value}`
       : `${API_BASE_URL}/api/topoboards/`
     
-    const res = await fetch(url)
+    const res = await fetch(url, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true'
+      }
+    })
     if (res.ok) {
+
       const data = await res.json()
       userBoards.value = data
       

@@ -441,9 +441,13 @@ const handleCreateTopoBoard = async () => {
 
     const res = await fetch(apiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+      },
       body: JSON.stringify(payload)
     })
+
 
 
     const baseUrl = `${window.location.origin}/board`

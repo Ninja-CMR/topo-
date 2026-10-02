@@ -202,7 +202,11 @@ const fetchBoardDetails = async () => {
   isLoading.value = true
   error.value = ''
   try {
-    const res = await fetch(`${API_BASE_URL}/api/topoboards/${boardId}`)
+    const res = await fetch(`${API_BASE_URL}/api/topoboards/${boardId}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true'
+      }
+    })
     if (res.ok) {
       board.value = await res.json()
     } else {
@@ -228,9 +232,13 @@ const submitResponse = async () => {
 
     const res = await fetch(`${API_BASE_URL}/api/topoboards/${boardId}/responses`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+      },
       body: JSON.stringify(payload)
     })
+
 
 
     if (res.ok) {

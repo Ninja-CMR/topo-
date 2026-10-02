@@ -121,9 +121,13 @@ const handleLogin = async () => {
   try {
     const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+      },
       body: JSON.stringify(form)
     })
+
 
     const data = await res.json()
     if (!res.ok) throw new Error(data.detail || 'Identifiants invalides.')
