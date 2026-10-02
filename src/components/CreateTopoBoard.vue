@@ -184,7 +184,7 @@
         </div>
 
         <a
-          :href="'https://api.whatsapp.com/send?text=' + encodeURIComponent('Donne ton avis sur ' + selectedBoard.product_name + ' : ' + getBoardShareUrl(selectedBoard.id))"
+          :href="'https://api.whatsapp.com/send?text=' + encodeURIComponent((selectedBoard.hook_message ? ('🔥 ' + selectedBoard.hook_message) : ('Donne ton avis sur ' + selectedBoard.product_name)) + '\n\n👉 Accéder au topoBoard : ' + getBoardShareUrl(selectedBoard.id))"
           target="_blank"
           class="px-4 py-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-xs rounded-[12px] shadow-sm flex items-center gap-2 transition-all cursor-pointer w-fit"
         >

@@ -209,7 +209,12 @@ const fetchBoardDetails = async () => {
     })
     if (res.ok) {
       board.value = await res.json()
+      if (board.value?.product_name) {
+        const hook = board.value.hook_message ? ` - ${board.value.hook_message}` : ''
+        document.title = `${board.value.product_name}${hook} | topoBoard`
+      }
     } else {
+
       error.value = "Ce topoBoard n'existe pas ou a été supprimé."
     }
   } catch (err) {

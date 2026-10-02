@@ -477,9 +477,11 @@ const copyLink = () => {
 }
 
 const whatsappShareUrl = computed(() => {
-  const message = `Salut ! Donne ton avis sur ${config.productName} via notre topoBoard : ${createdTopoBoardUrl.value}`
+  const hook = config.hookMessage ? `🔥 ${config.hookMessage}` : `Salut ! Donne ton avis sur ${config.productName}`
+  const message = `${hook}\n\n👉 Accéder au topoBoard : ${createdTopoBoardUrl.value}`
   return `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`
 })
+
 
 const goHome = () => {
   router.push('/create-topoboard')
