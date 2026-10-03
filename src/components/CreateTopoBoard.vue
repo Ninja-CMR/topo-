@@ -196,7 +196,10 @@
       <section class="w-full max-w-5xl mx-auto border-t border-[#E9E4DF] pt-10 mt-10 relative z-10">
         <div class="bg-gradient-to-br from-white to-[#FAF8F6] border border-[#E9E4DF] rounded-[24px] p-6 sm:p-10 shadow-xs text-center space-y-6">
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FD711A]/10 text-[#FD711A] text-xs font-extrabold border border-[#FD711A]/20">
-            <span>💬 Échange direct avec l'équipe</span>
+            <svg class="w-4 h-4 text-[#FD711A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <span>Échange direct avec l'équipe</span>
           </div>
 
           <div class="max-w-xl mx-auto space-y-2">
@@ -209,8 +212,11 @@
           </div>
 
           <!-- Numéro affiché -->
-          <div class="inline-block bg-[#FAF8F6] border border-[#E9E4DF] px-4 py-2 rounded-xl text-xs font-mono font-bold text-[#1C1410]">
-            📞 +237 696 17 28 99
+          <div class="inline-flex items-center gap-2 bg-[#FAF8F6] border border-[#E9E4DF] px-4 py-2 rounded-xl text-xs font-mono font-bold text-[#1C1410]">
+            <svg class="w-4 h-4 text-[#FD711A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+            <span>+237 696 17 28 99</span>
           </div>
 
           <!-- Boutons WhatsApp & Telegram -->
@@ -335,6 +341,31 @@
         </div>
       </div>
     </div>
+
+    <!-- COMPLIANT FOOTER -->
+    <footer class="w-full max-w-5xl mx-auto border-t border-[#E9E4DF] pt-8 mt-12 relative z-10 text-xs text-[#6B5F56] space-y-6">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <div class="flex items-center gap-3">
+          <Logo />
+        </div>
+        <p class="text-xs text-[#8C8077] max-w-md">
+          Collectez les retours de vos utilisateurs, centralisez vos suggestions et interagissez directement via WhatsApp & Telegram.
+        </p>
+      </div>
+
+      <div class="border-t border-[#F3EFEA] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#8C8077]">
+        <div>
+          © 2026 <strong>Topo.cm</strong>. Tous droits réservés. Vos données utilisateur sont traitées en toute confidentialité.
+        </div>
+        <div class="flex items-center gap-4 font-semibold text-[#6B5F56]">
+          <a href="#" @click.prevent class="hover:text-[#FD711A] transition-colors">Politique de confidentialité</a>
+          <span>•</span>
+          <a href="#" @click.prevent class="hover:text-[#FD711A] transition-colors">Gestion des données</a>
+          <span>•</span>
+          <a href="#" @click.prevent class="hover:text-[#FD711A] transition-colors">Conditions d'utilisation</a>
+        </div>
+      </div>
+    </footer>
 
   </div>
 </template>
