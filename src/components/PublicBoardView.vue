@@ -249,7 +249,9 @@ const submitResponse = async () => {
     if (res.ok) {
       submitted.value = true
     } else {
-      alert("Une erreur est survenue lors de l'envoi de votre avis.")
+      const errData = await res.json().catch(() => ({}))
+      console.error('Erreur API response:', errData)
+      alert(`Une erreur est survenue lors de l'envoi de votre avis: ${errData.detail || 'Erreur serveur'}`)
     }
   } catch (err) {
     console.error('Erreur envoi avis:', err)

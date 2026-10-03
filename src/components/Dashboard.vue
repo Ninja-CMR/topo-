@@ -13,12 +13,19 @@
       <div class="flex items-center gap-4">
         <button
           @click="goToStudio"
-          class="px-4 py-2 bg-[#FD711A] hover:bg-[#E35D08] text-[#1C1410] font-bold text-xs rounded-[10px] shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+          :disabled="isLimitReached"
+          :class="[
+            'px-4 py-2 font-bold text-xs rounded-[10px] shadow-xs flex items-center gap-1.5 transition-all',
+            isLimitReached
+              ? 'bg-[#E9E4DF] text-[#8C8077] cursor-not-allowed opacity-70 border border-[#D6CEC7]'
+              : 'bg-[#FD711A] hover:bg-[#E35D08] text-[#1C1410] cursor-pointer'
+          ]"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
-          Nouveau topoBoard
+          <span v-if="!isLimitReached">Nouveau topoBoard</span>
+          <span v-else>Limite atteinte (3/3)</span>
         </button>
         <button
           @click="handleLogout"
@@ -195,6 +202,7 @@ import Logo from './Logo.vue'
 
 const router = useRouter()
 const selectedBoard = ref<any>(null)
+const isLimitReached = computed(() => boards.value.length >= 3)
 
 // Mock Data pour les topoBoards créés et leurs réponses style Google Forms
 const boards = ref([

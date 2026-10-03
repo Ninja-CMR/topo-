@@ -53,15 +53,27 @@
         </p>
 
         <!-- Main Action CTA Button -->
-        <button
-          @click="goToStudio"
-          class="w-full sm:w-auto px-8 py-4 bg-[#FD711A] hover:bg-[#E35D08] active:bg-[#B84A06] text-[#1C1410] font-extrabold text-lg rounded-[16px] shadow-[0_10px_30px_rgba(253,113,26,0.35)] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer group"
-        >
-          <svg class="w-6 h-6 transition-transform duration-200 group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-          </svg>
-          <span>Créer un topoBoard</span>
-        </button>
+        <div class="flex flex-col items-center gap-2">
+          <button
+            @click="goToStudio"
+            :disabled="isLimitReached"
+            :class="[
+              'w-full sm:w-auto px-8 py-4 font-extrabold text-lg rounded-[16px] transition-all duration-200 flex items-center justify-center gap-3 group',
+              isLimitReached
+                ? 'bg-[#E9E4DF] text-[#8C8077] cursor-not-allowed shadow-none border border-[#D6CEC7]'
+                : 'bg-[#FD711A] hover:bg-[#E35D08] active:bg-[#B84A06] text-[#1C1410] shadow-[0_10px_30px_rgba(253,113,26,0.35)] hover:shadow-xl hover:-translate-y-0.5 cursor-pointer'
+            ]"
+          >
+            <svg class="w-6 h-6 transition-transform duration-200 group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+            </svg>
+            <span v-if="!isLimitReached">Créer un topoBoard</span>
+            <span v-else>Limite de 3 topoBoards atteinte</span>
+          </button>
+          <p v-if="isLimitReached" class="text-xs text-[#DC2626] font-semibold flex items-center gap-1">
+            ⚠️ Vous avez atteint la limite maximale de 3 topoBoards ({{ userBoards.length }}/3).
+          </p>
+        </div>
       </section>
 
       <!-- SECTION MES TOPOBOARDS (S'AICHE UNIQUEMENT SI AU MOINS 1 TOPOBOARD EST CRÉÉ) -->
@@ -256,7 +268,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, h } from 'vue'
+import { ref, computed, onMounted, onUnmounted, h } from 'vue'
 import { useRouter } from 'vue-router'
 import Logo from './Logo.vue'
 import { API_BASE_URL, getCurrentUserId } from '../config'
@@ -266,6 +278,8 @@ const userName = ref('')
 const selectedBoard = ref<any>(null)
 const userBoards = ref<any[]>([])
 let timer: any = null
+
+const isLimitReached = computed(() => userBoards.value.length >= 3)
 
 const bubbles = [
   { id: 1, name: 'Sonia K.', comment: 'Excellente idée cette feature !', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150', left: 5, top: 12, duration: 6, delay: 0 },

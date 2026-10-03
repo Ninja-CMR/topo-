@@ -226,15 +226,24 @@
         <div class="pt-6 mt-6 border-t border-[#E9E4DF]">
           <button
             @click="handleCreateTopoBoard"
-            :disabled="isCreating"
-            class="w-full h-12 bg-[#FD711A] hover:bg-[#E35D08] active:bg-[#B84A06] text-[#1C1410] font-extrabold text-sm rounded-[14px] shadow-[0_8px_24px_rgba(253,113,26,0.30)] hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            :disabled="isCreating || isLimitReached"
+            :class="[
+              'w-full h-12 text-sm rounded-[14px] font-extrabold flex items-center justify-center gap-2 transition-all duration-200',
+              isLimitReached
+                ? 'bg-[#E9E4DF] text-[#8C8077] cursor-not-allowed border border-[#D6CEC7]'
+                : 'bg-[#FD711A] hover:bg-[#E35D08] active:bg-[#B84A06] text-[#1C1410] shadow-[0_8px_24px_rgba(253,113,26,0.30)] hover:shadow-lg cursor-pointer disabled:opacity-50'
+            ]"
           >
-            <svg v-if="!isCreating" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg v-if="!isCreating && !isLimitReached" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
-            <span v-if="!isCreating">Créer mon topoBoard</span>
-            <span v-else>Création du topoBoard...</span>
+            <span v-if="isCreating">Création du topoBoard...</span>
+            <span v-else-if="isLimitReached">Limite de 3 topoBoards atteinte</span>
+            <span v-else>Créer mon topoBoard</span>
           </button>
+          <p v-if="isLimitReached" class="text-xs text-[#DC2626] font-semibold text-center mt-2">
+            ⚠️ Vous avez atteint la limite maximale de 3 topoBoards.
+          </p>
         </div>
       </aside>
 
@@ -383,7 +392,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Logo from './Logo.vue'
 import { API_BASE_URL, getCurrentUserId } from '../config'
@@ -393,6 +402,34 @@ const isCreating = ref(false)
 const createdTopoBoardUrl = ref('')
 const copied = ref(false)
 const openSection = ref<number | null>(1)
+const userBoardsCount = ref(0)
+
+const fetchUserBoardsCount = async () => {
+  try {
+    const userId = getCurrentUserId()
+    const url = userId 
+      ? `${API_BASE_URL}/api/topoboards/?user_id=${userId}`
+      : `${API_BASE_URL}/api/topoboards/`
+    
+    const res = await fetch(url, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true'
+      }
+    })
+    if (res.ok) {
+      const data = await res.json()
+      userBoardsCount.value = Array.isArray(data) ? data.length : 0
+    }
+  } catch (err) {
+    console.error('Erreur chargement topoBoards dans studio:', err)
+  }
+}
+
+onMounted(() => {
+  fetchUserBoardsCount()
+})
+
+const isLimitReached = computed(() => userBoardsCount.value >= 3)
 
 const config = reactive({
   productName: 'PaySaaS App',
@@ -417,6 +454,10 @@ const formattedProductUrl = computed(() => {
 })
 
 const handleCreateTopoBoard = async () => {
+  if (isLimitReached.value) {
+    alert('Limite de 3 topoBoards atteinte. Vous ne pouvez plus en créer.')
+    return
+  }
   isCreating.value = true
   try {
     const userId = getCurrentUserId()

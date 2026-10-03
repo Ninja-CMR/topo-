@@ -9,11 +9,27 @@ router = APIRouter(prefix="/topoboards", tags=["TopoBoards"])
 async def create_topoboard(payload: TopoBoardCreate, user_id: Optional[str] = Query(None)):
     """
     Crée un nouveau topoBoard dans la base de données Supabase, associé à l'utilisateur si spécifié.
+    Limite maximale : 3 topoBoards par utilisateur.
     """
     try:
+        clean_user_id = user_id.strip() if (user_id and user_id.strip() and user_id not in ("null", "undefined")) else None
+        
+        # Vérification du nombre de topoBoards existants
+        count_query = supabase.table("topoboards").select("id")
+        if clean_user_id:
+            count_query = count_query.or_(f"user_id.eq.{clean_user_id},user_id.is.null")
+        
+        count_res = count_query.execute()
+        existing_count = len(count_res.data) if count_res.data else 0
+        if existing_count >= 3:
+            raise HTTPException(
+                status_code=400,
+                detail="Limite de 3 topoBoards atteinte. Vous ne pouvez pas en créer davantage."
+            )
+
         data = payload.dict()
-        if user_id and user_id.strip() and user_id not in ("null", "undefined"):
-            data["user_id"] = user_id.strip()
+        if clean_user_id:
+            data["user_id"] = clean_user_id
         else:
             data.pop("user_id", None)
             
@@ -21,6 +37,8 @@ async def create_topoboard(payload: TopoBoardCreate, user_id: Optional[str] = Qu
         if not res.data:
             raise HTTPException(status_code=400, detail="Échec de la création du topoBoard dans Supabase")
         return res.data[0]
+    except HTTPException:
+        raise
     except Exception as e:
         print("Erreur création topoBoard:", str(e))
         raise HTTPException(status_code=500, detail=str(e))
@@ -75,5 +93,8 @@ async def add_response(board_id: str, payload: ResponseCreate):
         if not res.data:
             raise HTTPException(status_code=400, detail="Échec de l'enregistrement de la réponse")
         return res.data[0]
+    except HTTPException:
+        raise
     except Exception as e:
+        print(f"Erreur ajout réponse pour board '{board_id}':", str(e))
         raise HTTPException(status_code=500, detail=str(e))

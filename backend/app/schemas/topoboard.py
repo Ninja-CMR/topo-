@@ -20,7 +20,7 @@ class TopoBoardResponse(TopoBoardCreate):
     created_at: Optional[str] = None
 
 class ResponseCreate(BaseModel):
-    topoboard_id: str
+    topoboard_id: Optional[str] = None
     rating: Optional[int] = 5
     comment: str
     whatsapp: Optional[str] = None
