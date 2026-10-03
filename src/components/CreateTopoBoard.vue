@@ -6,7 +6,7 @@
       <div
         v-for="bubble in bubbles"
         :key="bubble.id"
-        class="absolute flex items-center gap-2.5 bg-white/90 backdrop-blur-md px-3.5 py-2 rounded-full border border-[#E9E4DF] shadow-[0_6px_20px_rgba(28,20,16,0.08)] bubble-pop"
+        class="absolute bubble-pop cursor-pointer pointer-events-auto"
         :style="{
           left: bubble.left + '%',
           top: bubble.top + '%',
@@ -14,11 +14,35 @@
           animationDelay: bubble.delay + 's'
         }"
       >
-        <img :src="bubble.avatar" :alt="bubble.name" class="w-8 h-8 rounded-full object-cover border border-[#FD711A]/40 flex-shrink-0" />
-        <div class="flex flex-col text-left">
-          <span class="text-[11px] font-bold text-[#1C1410] leading-none mb-0.5">{{ bubble.name }}</span>
-          <span class="text-[10px] text-[#6B5F56] font-medium leading-none">{{ bubble.comment }}</span>
+        <!-- Desktop Pill Version -->
+        <div class="hidden sm:flex items-center gap-2.5 bg-white/90 backdrop-blur-md px-3.5 py-2 rounded-full border border-[#E9E4DF] shadow-[0_6px_20px_rgba(28,20,16,0.08)]">
+          <img :src="bubble.avatar" :alt="bubble.name" class="w-8 h-8 rounded-full object-cover border border-[#FD711A]/40 flex-shrink-0" />
+          <div class="flex flex-col text-left">
+            <span class="text-[11px] font-bold text-[#1C1410] leading-none mb-0.5">{{ bubble.name }}</span>
+            <span class="text-[10px] text-[#6B5F56] font-medium leading-none">{{ bubble.comment }}</span>
+          </div>
         </div>
+
+        <!-- Mobile Real Orange Circular Avatar Bubble -->
+        <div
+          @click.stop="activeBubble = (activeBubble === bubble.id ? null : bubble.id)"
+          class="flex sm:hidden relative items-center justify-center w-12 h-12 rounded-full bg-[#FD711A] p-0.5 shadow-lg border-2 border-white transition-transform active:scale-110 cursor-pointer"
+        >
+          <img :src="bubble.avatar" :alt="bubble.name" class="w-full h-full rounded-full object-cover" />
+          
+          <!-- Popup Comment when tapped on mobile -->
+          <div
+            v-if="activeBubble === bubble.id"
+            class="absolute bottom-14 left-1/2 -translate-x-1/2 bg-white text-[#1C1410] p-3 rounded-xl shadow-2xl border border-[#FD711A] w-48 text-left z-50 animate-fade-in"
+          >
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[11px] font-bold text-[#FD711A] truncate">{{ bubble.name }}</span>
+              <button @click.stop="activeBubble = null" class="text-[10px] text-gray-400 hover:text-black">✕</button>
+            </div>
+            <p class="text-[11px] text-[#1C1410] font-medium leading-snug">"{{ bubble.comment }}"</p>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -168,6 +192,54 @@
         </div>
       </section>
 
+      <!-- SECTION CONTACT DÉVELOPPEURS TOPO -->
+      <section class="w-full max-w-5xl mx-auto border-t border-[#E9E4DF] pt-10 mt-10 relative z-10">
+        <div class="bg-gradient-to-br from-white to-[#FAF8F6] border border-[#E9E4DF] rounded-[24px] p-6 sm:p-10 shadow-xs text-center space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FD711A]/10 text-[#FD711A] text-xs font-extrabold border border-[#FD711A]/20">
+            <span>💬 Échange direct avec l'équipe</span>
+          </div>
+
+          <div class="max-w-xl mx-auto space-y-2">
+            <h2 class="text-2xl sm:text-3xl font-black text-[#1C1410] tracking-tight">
+              Tu aimes le concept ?
+            </h2>
+            <p class="text-xs sm:text-sm text-[#6B5F56] leading-relaxed font-medium">
+              Tu aimerais donner ton avis sur Topo ou bien entrer en contact avec les devs de Topo ? Laisse-nous un message !
+            </p>
+          </div>
+
+          <!-- Numéro affiché -->
+          <div class="inline-block bg-[#FAF8F6] border border-[#E9E4DF] px-4 py-2 rounded-xl text-xs font-mono font-bold text-[#1C1410]">
+            📞 +237 696 17 28 99
+          </div>
+
+          <!-- Boutons WhatsApp & Telegram -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
+            <a
+              href="https://wa.me/237696172899?text=Salut%20l%27%C3%A9quipe%20Topo%2C%20je%20souhaite%20donner%20mon%20avis%20sur%20le%20projet !"
+              target="_blank"
+              class="w-full sm:w-auto px-6 py-3.5 bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-xs rounded-[14px] shadow-sm flex items-center justify-center gap-2 transition-all cursor-pointer hover:shadow-md hover:-translate-y-0.5"
+            >
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-0.999 3.648 3.742-.981z"/>
+              </svg>
+              <span>Discuter sur WhatsApp</span>
+            </a>
+
+            <a
+              href="https://t.me/+237696172899"
+              target="_blank"
+              class="w-full sm:w-auto px-6 py-3.5 bg-[#229ED9] hover:bg-[#1d8cb0] text-white font-extrabold text-xs rounded-[14px] shadow-sm flex items-center justify-center gap-2 transition-all cursor-pointer hover:shadow-md hover:-translate-y-0.5"
+            >
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.56 8.16l-1.97 9.28c-.15.66-.54.82-1.09.51l-3.01-2.22-1.45 1.4c-.16.16-.3.3-.61.3l.22-3.07 5.58-5.04c.24-.22-.05-.34-.37-.13l-6.9 4.35-2.97-.93c-.65-.2-.66-.65.14-.96l11.61-4.47c.54-.2 1.01.12.83.98z"/>
+              </svg>
+              <span>Discuter sur Telegram</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
     </div>
 
     <!-- MAIN VIEW 2: RESPONSES DETAILS -->
@@ -277,6 +349,7 @@ const router = useRouter()
 const userName = ref('')
 const selectedBoard = ref<any>(null)
 const userBoards = ref<any[]>([])
+const activeBubble = ref<number | null>(null)
 let timer: any = null
 
 const isLimitReached = computed(() => userBoards.value.length >= 3)
